@@ -11,10 +11,8 @@ const Navbar = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-
     // logout handler
     const logoutHandle = () => {
-
 
 
 
@@ -42,7 +40,9 @@ const Navbar = () => {
                 <nav>
                     <ul>
                         <Link to="/" className="mr-5">home</Link>
-                        <Link to="/profile">profile</Link>
+                        {
+                            user && <Link to={`/profile/${user?._id}`}>profile</Link>
+                        }
                     </ul>
                 </nav>
                 {

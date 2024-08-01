@@ -2,26 +2,7 @@ import React, { useState } from 'react'
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaRegEdit } from "react-icons/fa";
 
-const TodoItem = () => {
-
-    const todos = [
-        {
-            id: 1,
-            titel: "Item 1",
-            desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis, sunt."
-        },
-        {
-            id: 2,
-            titel: "Item 2",
-            desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis, sunt."
-        },
-        {
-            id: 3,
-            titel: "Item 3",
-            desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis, sunt."
-        },
-
-    ];
+const TodoItem = ({ profile }) => {
 
     const [completedItems, setCompletedItems] = useState({});
 
@@ -40,23 +21,23 @@ const TodoItem = () => {
             <ul className="mt-4 space-y-2 capitalize">
 
                 {
-                    todos?.map((todo) => {
+                    profile?.todos?.slice().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).map((todo) => {
                         return (
                             <li
-                                key={todo.id}
+                                key={todo._id}
                                 className="block h-full rounded-lg border border-gray-700 p-4 hover:border-green-600">
                                 <div className="flex items-center gap-2">
                                     <input
                                         type="checkbox"
                                         className="size-5"
-                                        checked={completedItems[todo.id] || false}
-                                        onChange={() => handleCheckboxChange(todo.id)}
+                                        checked={completedItems[todo._id] || false}
+                                        onChange={() => handleCheckboxChange(todo._id)}
                                     />
 
-                                    <span className={`${completedItems[todo.id] ? 'line-through text-red-500' : ''}`}>
-                                        <strong className="font-medium text-white ">{todo.titel}</strong>
+                                    <span className={`${completedItems[todo._id] ? 'line-through text-red-500' : ''}`}>
+                                        <strong className="font-medium text-white ">{todo.title}</strong>
                                         <p className="mt-1 text-xs font-medium text-gray-300">
-                                            {todo.desc}
+                                            {todo.description}
                                         </p>
                                     </span>
                                 </div>

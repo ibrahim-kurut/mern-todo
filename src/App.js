@@ -8,15 +8,21 @@ import RegisterPage from './pages/RegisterPage';
 import ProfilePage from './pages/ProfilePage';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useSelector } from 'react-redux';
 function App() {
-  return (
 
+
+  const { user } = useSelector(state => state.auth)
+
+  return (
     <BrowserRouter>
       <ToastContainer position="top-center" theme="colored" />
       <Navbar />
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/profile" element={<ProfilePage />} />
+        {
+          user && <Route path="/profile/:id" element={<ProfilePage />} />
+        }
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
       </Routes>

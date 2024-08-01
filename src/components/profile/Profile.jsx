@@ -1,16 +1,28 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import TodoItem from '../todo/TodoItem'
 import AddTodo from '../todo/AddTodo'
 import { FaCirclePlus } from "react-icons/fa6";
+import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserProfile } from "../../redux/apiCalls/profileApiCall"
 
 const Profile = () => {
 
     const [openAddForm, setOpenAddForm] = useState(false)
 
+    const dispatch = useDispatch()
+    const { id } = useParams()
+    const { profile } = useSelector(state => state.profile)
+    useEffect(() => {
+        dispatch(getUserProfile(id))
+    }, [dispatch, id])
+
+
 
 
     return (
         <>
+
             <article className="rounded-xl border border-gray-700 bg-gray-800 p-4 md:w-[50%] w-[90%] mx-auto mt-10">
                 <div className="flex flex-col items-center gap-4">
                     <img
@@ -20,8 +32,8 @@ const Profile = () => {
                     />
 
                     <div className="text-white text-center">
-                        <h3 className="text-lg font-medium">Claire Mac</h3>
-                        <p className="">email</p>
+                        <h3 className="text-lg font-medium">{profile?.username}</h3>
+                        <p className="">{profile?.email}</p>
                     </div>
                 </div>
 
@@ -37,13 +49,14 @@ const Profile = () => {
 
             </div>
 
-            {
-                openAddForm && <AddTodo setOpenAddForm={setOpenAddForm} />
 
-            }
+            {openAddForm && <AddTodo setOpenAddForm={setOpenAddForm} />}
+
+
+
 
             {/* todo_item */}
-            <TodoItem />
+            <TodoItem profile={profile} />
         </>
     )
 }
