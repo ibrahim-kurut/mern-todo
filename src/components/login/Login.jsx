@@ -1,11 +1,17 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
+
+import { LoginUser } from '../../redux/apiCalls/authApiCall'
+import { useDispatch } from 'react-redux'
+
 
 const Login = () => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
+    const navigate = useNavigate();
+    const dispatch = useDispatch()
 
     // submit form handler
     const handleSubmit = (e) => {
@@ -21,15 +27,12 @@ const Login = () => {
             email,
             password
         }
-        setTimeout(() => {
-            toast.success("data sent successfully ...")
-            setEmail("")
-            setPassword("")
-        }, 2000);
 
-        console.log(formData);
-
-        // call api here
+        dispatch(LoginUser(formData))
+            .then(() => {
+                // navigate to home page after successful login
+                navigate("/");
+            })
     }
 
 

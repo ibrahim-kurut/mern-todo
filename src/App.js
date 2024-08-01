@@ -6,13 +6,10 @@ import LoginPage from './pages/LoginPage';
 import Navbar from './components/navbar/Navbar';
 import RegisterPage from './pages/RegisterPage';
 import ProfilePage from './pages/ProfilePage';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 function App() {
   return (
 
     <BrowserRouter>
-      <ToastContainer position="top-center" theme="colored" />
       <Navbar />
       <Routes>
         <Route path="/" element={<HomePage />} />
