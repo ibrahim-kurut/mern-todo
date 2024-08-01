@@ -1,10 +1,39 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
+import { LogoutUser } from '../../redux/apiCalls/authApiCall'
+import swal from 'sweetalert';
 
 const Navbar = () => {
 
     const { user } = useSelector(state => state.auth)
+
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+
+    // logout handler
+    const logoutHandle = () => {
+
+
+
+
+
+
+        swal({
+            title: "Are you sure?",
+            text: "to close the account ?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((isOk) => {
+                if (isOk) {
+                    dispatch(LogoutUser())
+                    navigate('/login')
+                }
+            });
+    }
 
     return (
         <div className="bg-gray-800 text-gray-300 ">
@@ -17,7 +46,9 @@ const Navbar = () => {
                     </ul>
                 </nav>
                 {
-                    user ? <Link to="" className="capitalize mr-3">logout</Link>
+                    user ? <Link to=""
+                        onClick={logoutHandle}
+                        className="capitalize mr-3">logout</Link>
                         :
                         <div className="">
                             <Link to="/login" className="capitalize mr-3">login</Link>
