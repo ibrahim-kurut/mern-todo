@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { toast } from "react-toastify"
-
+import { RegisterUser } from '../../redux/apiCalls/authApiCall'
+import swal from 'sweetalert';
 
 
 const RegisterComp = () => {
@@ -10,6 +12,11 @@ const RegisterComp = () => {
     const [username, setUserName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+    const { registerMsg } = useSelector(state => state.auth)
 
     // submit form handler
     const handleSubmit = (e) => {
@@ -29,16 +36,25 @@ const RegisterComp = () => {
             email,
             password
         }
-        setTimeout(() => {
-            toast.success("data sent successfully ...")
-            setUserName("")
-            setEmail("")
-            setPassword("")
-        }, 2000);
 
-        console.log(formData);
 
         // call api here
+        dispatch(RegisterUser(formData))
+
+
+        if (registerMsg) {
+            swal({
+                title: registerMsg.message,
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((isOk) => {
+                    if (isOk) {
+                        navigate('/login')
+                    }
+                });
+        }
     }
 
 
@@ -61,8 +77,6 @@ const RegisterComp = () => {
                                 placeholder="Enter username"
                                 value={username}
                                 onChange={(e) => setUserName(e.target.value)}
-
-
                             />
                         </div>
                         <div className="relative">

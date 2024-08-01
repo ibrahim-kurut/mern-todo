@@ -29,4 +29,18 @@ export function LogoutUser() {
     }
 }
 
+// ============== register a new user =============
+
+export function RegisterUser(userDate) {
+    return async (dispatch) => {
+        try {
+            const res = await axios.post("http://localhost:5000/api/auth/register/", userDate)
+            dispatch(authActions.registerHandler(res.data))
+            // dispatch(authActions.registerHandler(res.data.message))
+        } catch (error) {
+            toast.error(error.response.data.message);
+        }
+    }
+}
+
 
