@@ -5,11 +5,13 @@ import { FaRegEdit } from "react-icons/fa";
 import { deleteTodoHandle } from '../../redux/apiCalls/todoApiCall';
 import { useDispatch } from 'react-redux';
 import swal from 'sweetalert';
+import UpdateTodoModel from './UpdateTodoModel';
 
 
 const TodoItem = ({ profile }) => {
 
     const [completedItems, setCompletedItems] = useState({});
+    const [openUpdateModel, setOpenUpdateModel] = useState(false);
 
     const handleCheckboxChange = (id) => {
         setCompletedItems(prevState => {
@@ -89,7 +91,9 @@ const TodoItem = ({ profile }) => {
                                 </div>
 
                                 <div className="flex justify-end gap-3 text-white mt-2">
-                                    <p className="text-green-500 cursor-pointer"><FaRegEdit /></p>
+                                    <p
+                                        onClick={() => setOpenUpdateModel(true)}
+                                        className="text-green-500 cursor-pointer"><FaRegEdit /></p>
                                     <p
                                         onClick={() => handleDelete(todo?._id)}
                                         className="text-red-400 cursor-pointer"><RiDeleteBin6Line /></p>
@@ -102,6 +106,10 @@ const TodoItem = ({ profile }) => {
 
 
             </ul>
+            {
+                openUpdateModel && <UpdateTodoModel setOpenUpdateModel={setOpenUpdateModel} />
+            }
+
         </div>
     )
 }
