@@ -4,7 +4,8 @@ const todoSlice = createSlice({
     name: "todo",
     initialState: {
         loading: false,
-        isTodoCreated: false
+        isTodoCreated: false,
+        todos: [],
     },
     reducers: {
         addLoading(state) {
@@ -19,7 +20,11 @@ const todoSlice = createSlice({
         },
         resetisTodoCreated(state) {
             state.isTodoCreated = false
-        }
+        },
+        //! delete todo
+        deleteTodo(state, action) {
+            state.todos = state.todos.filter(todo => todo._id !== action.payload)
+        },
     }
 })
 

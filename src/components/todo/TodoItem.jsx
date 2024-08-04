@@ -1,6 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaRegEdit } from "react-icons/fa";
+
+import { deleteTodoHandle } from '../../redux/apiCalls/todoApiCall';
+import { useDispatch } from 'react-redux';
+import swal from 'sweetalert';
+
 
 const TodoItem = ({ profile }) => {
 
@@ -10,9 +15,50 @@ const TodoItem = ({ profile }) => {
         setCompletedItems(prevState => {
             const changeState = { ...prevState };
             changeState[id] = !prevState[id];
+
+            // Save the new state to Local Storage
+            localStorage.setItem('completedItems', JSON.stringify(changeState));
+
             return changeState;
         });
     };
+
+    useEffect(() => {
+        // return state from Localstorage when the application is loaded
+        const savedCompletedItems = JSON.parse(localStorage.getItem('completedItems')) || {};
+        setCompletedItems(savedCompletedItems);
+    }, []);
+
+    const dispatch = useDispatch()
+
+    // delete handel
+    const handleDelete = (id) => {
+
+
+        swal({
+            title: "Are you sure?",
+            text: "to delete this post ?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((isOk) => {
+                if (isOk) {
+                    setTimeout(() => {
+                        dispatch(deleteTodoHandle(id))
+                        window.location.reload()
+                    }, 1500);
+                }
+            });
+
+
+
+
+
+    }
+
+
+
 
 
 
@@ -44,7 +90,9 @@ const TodoItem = ({ profile }) => {
 
                                 <div className="flex justify-end gap-3 text-white mt-2">
                                     <p className="text-green-500 cursor-pointer"><FaRegEdit /></p>
-                                    <p className="text-red-400 cursor-pointer"><RiDeleteBin6Line /></p>
+                                    <p
+                                        onClick={() => handleDelete(todo?._id)}
+                                        className="text-red-400 cursor-pointer"><RiDeleteBin6Line /></p>
                                 </div>
 
                             </li>

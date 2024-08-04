@@ -29,3 +29,22 @@ export function createNewTodo(newTodo) {
 
     }
 }
+
+// Delete Post
+export function deleteTodoHandle(todoId) {
+    return async (dispatch, getState) => {
+        try {
+            const { data } = await axios.delete(`http://localhost:5000/api/todos/${todoId}`, {
+                // only a logged in user can delete this todo
+                headers: {
+                    Authorization: "Bearer " + getState().auth.user.token,
+                }
+            });
+            dispatch(todoActions.deleteTodo(data.todoId))
+            toast.success(data.message)
+        } catch (error) {
+            console.log(error);
+            // toast.error(error.response.data.message);
+        }
+    }
+}
